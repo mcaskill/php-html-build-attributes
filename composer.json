@@ -1,0 +1,21 @@
+{
+  "name": "mcaskill/php-html-build-attributes",
+  "description": "Generate a string of HTML attributes.",
+  "authors": [
+    {
+      "name": "Chauncey McAskill",
+      "email": "chauncey@mcaskill.ca",
+      "homepage": "https://github.com/mcaskill"
+    }
+  ],
+  "keywords": [
+    "function",
+    "wordpress"
+  ],
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "autoload": {
+    "files": [ "Function.HTML-Build-Attributes.php" ]
+  }
+}

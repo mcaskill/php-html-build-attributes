@@ -12,37 +12,47 @@ if ( ! function_exists('html_build_attributes') ) :
 	 */
 	function html_build_attributes( $attr = [], $callback = null )
 	{
-	    $html = '';
+		$html = '';
 
-	    if ( count($attr) ) {
-	        $html = array_map(
-	            function ( $val, $key ) {
-	                if ( is_bool( $val ) ) {
-	                    return ( $val ? $key : '' );
-	                } elseif ( isset( $val ) ) {
-	                    if ( is_array( $val ) ) {
-	                        $val = implode( ' ', $val );
-	                    }
+		if ( count($attr) ) {
+			$html = array_map(
+				function ( $val, $key ) {
+					if ( is_bool( $val ) ) {
+						return ( $val ? $key : '' );
+					} elseif ( isset( $val ) ) {
+						if ( $val instanceof Closure ) {
+							$val = $val();
+						} elseif ( is_callable( [ $val, 'toArray' ] ) ) {
+							$val = $val->toArray();
+						} elseif ( is_callable( [ $val, '__toString' ] ) ) {
+							$val = strval( $val );
+						}
 
-	                    if ( is_callable( $callback ) ) {
-	                    	$val = call_user_func( $callback, $val );
-	                    } elseif ( function_exists('esc_attr') ) {
-	                    	$val = esc_attr( $val );
-	                    } else {
-	                    	$val = htmlspecialchars( $val, ENT_QUOTES );
-	                    }
+						if ( is_array( $val ) ) {
+							$val = implode( ' ', $val );
+						}
 
-	                    return sprintf( '%1$s="%2$s"', $key, $val );
-	                }
-	            },
-	            $attr,
-	            array_keys( $attr )
-	        );
+						if ( is_callable( $callback ) ) {
+							$val = call_user_func( $callback, $val );
+						} elseif ( function_exists('esc_attr') ) {
+							$val = esc_attr( $val );
+						} else {
+							$val = htmlspecialchars( $val, ENT_QUOTES );
+						}
 
-	        $html = implode( ' ', $html );
-	    }
+						if ( is_string( $val ) ) {
+							return sprintf( '%1$s="%2$s"', $key, $val );
+						}
+					}
+				},
+				$attr,
+				array_keys( $attr )
+			);
 
-	    return $html;
+			$html = implode( ' ', $html );
+		}
+
+		return $html;
 	}
 
 endif;

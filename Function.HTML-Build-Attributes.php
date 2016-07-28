@@ -5,12 +5,12 @@ if ( ! function_exists('html_build_attributes') ) :
 	/**
 	 * Generate a string of HTML attributes
 	 *
-	 * @param   array     $attr           Associative array of attribute names and values.
+	 * @param   array          $attr      Associative array of attribute names and values.
 	 * @param   callable|null  $callback  Callback function to escape values for HTML attributes.
 	 *                                    Defaults to `htmlspecialchars()`.
 	 * @return  string  Returns a string of HTML attributes.
 	 */
-	function html_build_attributes( $attr, $callback = null )
+	function html_build_attributes( array $attr, callable $callback = null )
 	{
 	        if ( ! count($attr) ) {
 	            return '';

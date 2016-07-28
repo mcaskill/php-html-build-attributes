@@ -17,7 +17,7 @@ Generate a string of HTML attributes from the associative array provided.
   If `attr` is an object, then only public properties will be incorporated into the result.  
   If a value is an array, its values will be concatenated and delimited with a space.  
 	Values that cannot be converted into strings will be ignored. If the value is Stringable, Arrayble, or a `Closure`, attempts will be made to parse as a string. 
-- `$callback` — Callback function for escaping the values for the HTML attributes.  
+- `callback` — Callback function for escaping the values for the HTML attributes.  
   If no sanitizer is provided, [`htmlspecialchars()`](http://php.net/htmlspecialchars) is used;  
   If using WordPress, the [`esc_attr()`](https://developer.wordpress.org/reference/functions/esc_attr/) function is used.
 

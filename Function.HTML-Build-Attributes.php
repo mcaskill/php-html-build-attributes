@@ -12,9 +12,9 @@ if ( ! function_exists('html_build_attributes') ) :
 	 */
 	function html_build_attributes( array $attr, callable $callback = null )
 	{
-	        if ( ! count($attr) ) {
-	            return '';
-	        }
+		if ( ! count($attr) ) {
+			return '';
+		}
 
 		$html = array_map(
 			function ( $val, $key ) use ( $callback ) {
@@ -24,11 +24,11 @@ if ( ! function_exists('html_build_attributes') ) :
 					if ( $val instanceof \Closure ) {
 						$val = $val();
 					} elseif ( $val instanceof \JsonSerializable ) {
-                        $val = json_encode(
-                            $val->jsonSerialize(),
-                            (JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE)
-                        );
-                    } elseif ( is_callable( [ $val, 'toArray' ] ) ) {
+						$val = json_encode(
+							$val->jsonSerialize(),
+							(JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE)
+						);
+					} elseif ( is_callable( [ $val, 'toArray' ] ) ) {
 						$val = $val->toArray();
 					} elseif ( is_callable( [ $val, '__toString' ] ) ) {
 						$val = strval( $val );

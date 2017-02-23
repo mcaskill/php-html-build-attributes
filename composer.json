@@ -1,6 +1,8 @@
 {
   "name": "mcaskill/php-html-build-attributes",
+  "version": "1.0.0",
   "description": "Generate a string of HTML attributes.",
+  "license": "MIT",
   "authors": [
     {
       "name": "Chauncey McAskill",

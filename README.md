@@ -33,20 +33,6 @@ Returns a string of HTML attributes.
 $ composer require mcaskill/php-html-build-attributes
 ```
 
-```json
-{
-	"repositories": [
-		{
-		  "type": "git",
-		  "url": "https://gist.github.com/***.git"
-		}
-	],
-	"require": {
-		"mcaskill/php-html-build-attributes": "dev-master"
-	}
-}
-```
-
 ### Without Composer
 
 Why are you not using [composer](http://getcomposer.org/)? Download `Function.HTML-Build-Attributes.php` from the gist and save the file into your project path somewhere.

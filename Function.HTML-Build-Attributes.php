@@ -1,7 +1,6 @@
 <?php
 
 if (!function_exists('html_build_attributes')) {
-
 	/**
 	 * Generate a string of HTML attributes
 	 *

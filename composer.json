@@ -1,6 +1,5 @@
 {
   "name": "mcaskill/php-html-build-attributes",
-  "version": "1.0.0",
   "description": "Generate a string of HTML attributes.",
   "license": "MIT",
   "authors": [
@@ -14,6 +13,11 @@
     "function",
     "wordpress"
   ],
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.x-dev"
+    }
+  },
   "require": {
     "php": ">=5.4.0"
   },

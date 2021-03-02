@@ -21,6 +21,14 @@ if (!function_exists('html_build_attributes')) {
                 continue;
             }
 
+            if (is_string($key)) {
+                $key = trim($key);
+
+                if (strlen($key) === 0) {
+                    continue;
+                }
+            }
+
             if (is_object($val)) {
                 if ($val instanceof Closure) {
                     $val = $val();

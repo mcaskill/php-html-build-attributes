@@ -38,10 +38,7 @@ if (!function_exists('html_build_attributes')) {
                 if ($val instanceof Closure) {
                     $val = $val();
                 } elseif ($val instanceof JsonSerializable) {
-                    $val = json_encode(
-                        $val->jsonSerialize(),
-                        (JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE)
-                    );
+                    $val = json_encode($val, (JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE));
                 } elseif (is_callable([ $val, 'toArray' ])) {
                     $val = $val->toArray();
                 } elseif (is_callable([ $val, '__toString' ])) {
@@ -68,7 +65,7 @@ if (!function_exists('html_build_attributes')) {
             }
 
             if (is_callable($callback)) {
-                $val = call_user_func($callback, $val);
+                $val = $callback($val);
             } elseif (function_exists('esc_attr')) {
                 $val = esc_attr($val);
             } else {

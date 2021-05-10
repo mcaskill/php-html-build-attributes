@@ -37,8 +37,6 @@ if (!function_exists('html_build_attributes')) {
             if (is_object($val)) {
                 if ($val instanceof Closure) {
                     $val = $val();
-                } elseif ($val instanceof JsonSerializable) {
-                    $val = json_encode($val, (JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE));
                 } elseif (is_callable([ $val, 'toArray' ])) {
                     $val = $val->toArray();
                 } elseif (is_callable([ $val, '__toString' ])) {
@@ -51,9 +49,7 @@ if (!function_exists('html_build_attributes')) {
                     $html[] = $key;
                 }
                 continue;
-            }
-
-            if (is_array($val)) {
+            } elseif (is_array($val)) {
                 $val = implode(' ', array_reduce($val, function ($tokens, $token) {
                     if (is_string($token)) {
                         $token = trim($token);
@@ -71,6 +67,8 @@ if (!function_exists('html_build_attributes')) {
                 if (strlen($val) === 0) {
                     continue;
                 }
+            } elseif (!is_string($val) && !is_numeric($val)) {
+                $val = json_encode($val, (JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE));
             }
 
             if (is_callable($callback)) {
@@ -81,10 +79,7 @@ if (!function_exists('html_build_attributes')) {
                 $val = htmlspecialchars($val, ENT_QUOTES);
             }
 
-            if (is_string($val) || is_numeric($val)) {
-                $html[] = sprintf('%1$s="%2$s"', $key, $val);
-                continue;
-            }
+            $html[] = sprintf('%1$s="%2$s"', $key, $val);
         }
 
         return implode(' ', $html);

@@ -54,16 +54,23 @@ if (!function_exists('html_build_attributes')) {
             }
 
             if (is_array($val)) {
-                if (function_exists('is_blank')) {
-                    $filter = function ($var) {
-                        return !is_blank($var);
-                    };
-                } else {
-                    $filter = function ($var) {
-                        return !empty($var) || is_numeric($var);
-                    };
+                $val = implode(' ', array_reduce($val, function ($tokens, $token) {
+                    if (is_string($token)) {
+                        $token = trim($token);
+
+                        if (strlen($token) > 0) {
+                            $tokens[] = $token;
+                        }
+                    } elseif (is_numeric($token)) {
+                        $tokens[] = $token;
+                    }
+
+                    return $tokens;
+                }, []));
+
+                if (strlen($val) === 0) {
+                    continue;
                 }
-                $val = implode(' ', array_filter($val, $filter));
             }
 
             if (is_callable($callback)) {

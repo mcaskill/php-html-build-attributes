@@ -19,16 +19,25 @@ Generate a string of HTML attributes from the associative array provided.
   If `attr` is a non-iterable object, then only accessible non-static properties
   will be incorporated into the result.
   
-  If a value of `attr` is an array, its values will be concatenated and
-  delimited with a space.
+  If an attribute name is an empty string, the attribute is ignored.
+  The attribute name will be trimmed of leading/trailing whitespace.
   
-  If a value of `attr` is a boolean, the value's key will be rendered without
-  a value.
-
-  If the value is Stringable, Arrayble, or a [`Closure`][class.closure],
-  attempts will be made to parse as a string.
+  If an attribute value is callable (either as a [`Closure`][class.closure] or
+  invokable), it is called and the returned value continues processing.
   
-	Values that cannot be converted into strings will be ignored.
+  If an attribute value is `null`, the attribute is ignored.
+  
+  If an attribute value is an arrayable or a stringable object, it is converted
+  to its primitive type.
+  
+  If an attribute value is a boolean and `true`, the attribute will be rendered
+  without a value, otherwise the attribute is ignored.
+  
+  If an attribute value is an array, only numbers and strings are accepted.
+  Strings of the array will be trimmed of leading/trailing whitespace.
+  If the filtered array is empty, the attribute is ignored.
+  
+  Any other value will be serialized using [`json_encode()`][function.json_encode].
   
 - `callback` — Callback function for escaping the values for the HTML attributes.
   
@@ -57,4 +66,6 @@ into your project path somewhere.
 
 [class.closure]:             https://php.net/class.closure
 [function.htmlspecialchars]: https://php.net/function.htmlspecialchars
+[function.json_encode]:      https://php.net/function.json_encode
+[object.invoke]:             https://php.net/oop5.magic#object.invoke
 [wp.esc_attr]:               https://developer.wordpress.org/reference/functions/esc_attr/

@@ -47,7 +47,9 @@ if (!function_exists('html_build_attributes')) {
             }
 
             if (is_bool($val)) {
-                $html[] = ($val ? $key : '');
+                if ($val) {
+                    $html[] = $key;
+                }
                 continue;
             }
 

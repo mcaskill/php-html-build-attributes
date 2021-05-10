@@ -22,10 +22,6 @@ if (!function_exists('html_build_attributes')) {
 
         $html = [];
         foreach ($attr as $key => $val) {
-            if (is_null($val)) {
-                continue;
-            }
-
             if (is_string($key)) {
                 $key = trim($key);
 
@@ -34,10 +30,16 @@ if (!function_exists('html_build_attributes')) {
                 }
             }
 
+            if (is_callable($val)) {
+                $val = $val();
+            }
+
+            if (is_null($val)) {
+                continue;
+            }
+
             if (is_object($val)) {
-                if ($val instanceof Closure) {
-                    $val = $val();
-                } elseif (is_callable([ $val, 'toArray' ])) {
+                if (is_callable([ $val, 'toArray' ])) {
                     $val = $val->toArray();
                 } elseif (is_callable([ $val, '__toString' ])) {
                     $val = strval($val);

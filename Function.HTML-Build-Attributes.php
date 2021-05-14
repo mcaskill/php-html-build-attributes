@@ -2,11 +2,12 @@
 
 if (!function_exists('html_build_attributes')) {
     /**
-     * Generate a string of HTML attributes
+     * Generate a string of HTML attributes.
      *
-     * @param  array|object  $attr     Associative array or object of attribute names and values.
-     * @param  callable|null $callback Callback function to escape values for HTML attributes.
-     *                                 Defaults to `htmlspecialchars()`.
+     * @param  array|object  $attr     Associative array or object containing properties,
+     *     representing attribute names and values.
+     * @param  callable|null $callback Callback function to escape the values for HTML attributes.
+     *     Defaults to `esc_attr()`, if available, otherwise `htmlspecialchars()`.
      * @return string Returns a string of HTML attributes
      *     or a empty string if $attr is invalid or empty.
      */

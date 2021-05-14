@@ -1,19 +1,34 @@
 # html_build_attributes
 
-(PHP 5 >= 5.4, PHP 7, PHP 8)  
-`html_build_attributes` — Generate a string of HTML attributes.
+> PHP 5 >= 5.4, PHP 7, PHP 8
 
-## Description
+Generate a string of HTML attributes.
 
-```php
-string html_build_attributes( array $attr [, callable $callback = null ] )
+## Installation
+
+Using [Composer](https://getcomposer.org/):
+
+```
+$ composer require mcaskill/php-html-build-attributes
 ```
 
-Generate a string of HTML attributes from the associative array provided.
+Alternatively, download `Function.HTML-Build-Attributes.php` from the package
+source and save the file into your project path somewhere.
 
-## Parameters
+## Upgrading
 
-- `attr` — Associative array, or object containing properties, representing
+This package follows [semantic versioning](https://semver.org/), which means
+breaking changes may occur between major releases.
+
+## API
+
+```php
+html_build_attributes( array|object $attr [, callable $callback = null ] ) : string
+```
+
+### Parameters
+
+- `attr` — Associative array or object containing properties, representing
   attribute names and values.
   
   If `attr` is a non-iterable object, then only accessible non-static properties
@@ -39,30 +54,41 @@ Generate a string of HTML attributes from the associative array provided.
   
   Any other value will be serialized using [`json_encode()`][function.json_encode].
   
-- `callback` — Callback function for escaping the values for the HTML attributes.
+- `callback` — Callback function to escape the values for HTML attributes.
   
-  If no sanitizer is provided, [`htmlspecialchars()`][function.htmlspecialchars]
+  If no function is provided, [`htmlspecialchars()`][function.htmlspecialchars]
   is used;
   
   If using WordPress, the [`esc_attr()`][wp.esc_attr] function is used.
 
-## Return Values
+### Return Values
 
 Returns a string of HTML attributes or a empty string if `attr` is invalid or empty.
 
-## Installation
+## Examples
 
-### With Composer
+### Example #1: Simple usage of html_build_attributes()
 
+```php
+$attr = [
+  'type'           => 'file',
+  'id'             => 'avatar',
+  'name'           => 'avatar',
+  'class'          => [ 'form-control', 'form-control-sm' ],
+  'multiple'       => true,
+  'disabled'       => false,
+  'accept'         => implode(',', [ 'image/png', 'image/jpeg' ]),
+  'data-max-files' => 3,
+];
+
+echo '<input ' . html_build_attributes($attr) . '>';
 ```
-$ composer require mcaskill/php-html-build-attributes
+
+The above example will output:
+
+```html
+<input type="file" id="avatar" name="avatar" class="form-control form-control-sm" multiple accept="image/png,image/jpeg" data-max-files="3">
 ```
-
-### Without Composer
-
-Why are you not using [composer](http://getcomposer.org/)?
-Download `Function.HTML-Build-Attributes.php` from the gist and save the file
-into your project path somewhere.
 
 [class.closure]:             https://php.net/class.closure
 [function.htmlspecialchars]: https://php.net/function.htmlspecialchars

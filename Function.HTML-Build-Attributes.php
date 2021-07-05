@@ -31,7 +31,7 @@ if (!function_exists('html_build_attributes')) {
                 }
             }
 
-            if (is_callable($val)) {
+            if (is_object($val) && is_callable($val)) {
                 $val = $val();
             }
 

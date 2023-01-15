@@ -18,7 +18,24 @@
         "php": ">=5.4.0",
         "ext-json": "*"
     },
+    "require-dev": {
+        "php": ">=7.4.0",
+        "pestphp/pest": "^1.22"
+    },
     "autoload": {
         "files": [ "Function.HTML-Build-Attributes.php" ]
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "test": [
+            "@test:pest"
+        ],
+        "test:pest": [
+            "pest"
+        ]
     }
 }

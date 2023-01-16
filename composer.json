@@ -14,11 +14,6 @@
         "html",
         "templating"
     ],
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.x-dev"
-        }
-    },
     "require": {
         "php": ">=5.4.0",
         "ext-json": "*"

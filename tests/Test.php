@@ -1,13 +1,15 @@
 <?php
 
-/**
- * @param mixed $input The variable to be passed to the function.
- */
-it('returns an empty string', function ($input) {
+$inputBuildsExpectedEmptyString = function ($input) : void {
     $output = html_build_attributes($input);
 
     expect($output)->toBeString()->toBeEmpty();
-})->with([
+};
+
+/**
+ * @param mixed $input The variable to be passed to the function.
+ */
+it('returns an empty string', $inputBuildsExpectedEmptyString)->with([
     'scalar',
     (new stdClass()),
     (new ArrayIterator()),

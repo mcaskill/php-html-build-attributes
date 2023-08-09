@@ -9,6 +9,7 @@ if (!function_exists('html_build_attributes')) {
      *     representing attribute names and values.
      * @param  callable|null $escape
      *     Callback function to escape the values for HTML attributes.
+     *     Accepts two parameters: 1. attribute value, 2. attribute name.
      *     Defaults to `esc_attr()`, if available, otherwise `htmlspecialchars()`.
      * @return string Returns a string of HTML attributes
      *     or a empty string if $attributes is invalid or empty.
@@ -21,6 +22,18 @@ if (!function_exists('html_build_attributes')) {
 
         if (!is_array($attributes) || !count($attributes)) {
             return '';
+        }
+
+        if (is_null($escape)) {
+            if (function_exists('esc_attr')) {
+                $escape = function ($value) {
+                    return esc_attr($value);
+                };
+            } else {
+                $escape = function ($value) {
+                    return htmlspecialchars($value, ENT_QUOTES, null, false);
+                };
+            }
         }
 
         $html = [];
@@ -76,18 +89,10 @@ if (!function_exists('html_build_attributes')) {
                 $attribute_value = json_encode($attribute_value, (JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE));
             }
 
-            if (is_callable($escape)) {
-                $attribute_value = $escape($attribute_value);
-            } elseif (function_exists('esc_attr')) {
-                $attribute_value = esc_attr($attribute_value);
-            } else {
-                $attribute_value = htmlspecialchars($attribute_value, ENT_QUOTES);
-            }
-
             $html[] = sprintf(
                 '%1$s="%2$s"',
                 $attribute_name,
-                $attribute_value
+                $escape($attribute_value, $attribute_name)
             );
         }
 

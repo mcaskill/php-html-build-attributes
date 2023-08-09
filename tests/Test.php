@@ -79,3 +79,30 @@ it('generates HTML attributes', $inputBuildsExpectedHtml)->with([
         ],
     ],
 ]);
+
+$inputBuildsExpectedEscape = function ($html, $args) : void {
+    $output = html_build_attributes(...$args);
+
+    expect($output)->toBe($html);
+};
+
+/**
+ * @param string   $html   The expected return value.
+ * @param mixed    $input  The variable to be passed to the function.
+ * @param callable $escape The custom escape callback to be passed to the function.
+ */
+it('escapes HTML attributes', $inputBuildsExpectedEscape)->with([
+    [
+        'id="FOOBAR"',
+        [
+            [
+                'id' => 'foobar',
+            ],
+            function ($value, $name) {
+                expect($name)->toBe('id');
+
+                return strtoupper($value);
+            },
+        ],
+    ],
+]);

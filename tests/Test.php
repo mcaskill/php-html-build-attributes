@@ -36,13 +36,14 @@ $inputBuildsExpectedHtml = function ($html, $input) : void {
  */
 it('generates HTML attributes', $inputBuildsExpectedHtml)->with([
     [
-        'id="foobar" required class="foo baz 0 qux"',
+        'id="foobar" required class="foo baz 0 qux" data-fn="rand"',
         [
             'id'       => function () {
                 return 'foobar';
             },
             'required' => true,
             'class'    => [ 'foo', null, '', '   ', '  baz ', 0, true, false, 'qux' ],
+            'data-fn'  => 'rand',
         ],
     ],
     [

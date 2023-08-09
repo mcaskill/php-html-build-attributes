@@ -4,56 +4,58 @@ if (!function_exists('html_build_attributes')) {
     /**
      * Generate a string of HTML attributes.
      *
-     * @param  array|object  $attr     Associative array or object containing properties,
+     * @param  array|object  $attributes
+     *     Associative array or object containing properties,
      *     representing attribute names and values.
-     * @param  callable|null $callback Callback function to escape the values for HTML attributes.
+     * @param  callable|null $escape
+     *     Callback function to escape the values for HTML attributes.
      *     Defaults to `esc_attr()`, if available, otherwise `htmlspecialchars()`.
      * @return string Returns a string of HTML attributes
-     *     or a empty string if $attr is invalid or empty.
+     *     or a empty string if $attributes is invalid or empty.
      */
-    function html_build_attributes($attr, callable $callback = null)
+    function html_build_attributes($attributes, callable $escape = null)
     {
-        if (is_object($attr) && !($attr instanceof \Traversable)) {
-            $attr = get_object_vars($attr);
+        if (is_object($attributes) && !($attributes instanceof \Traversable)) {
+            $attributes = get_object_vars($attributes);
         }
 
-        if (!is_array($attr) || !count($attr)) {
+        if (!is_array($attributes) || !count($attributes)) {
             return '';
         }
 
         $html = [];
-        foreach ($attr as $key => $val) {
-            if (is_string($key)) {
-                $key = trim($key);
+        foreach ($attributes as $attribute_name => $attribute_value) {
+            if (is_string($attribute_name)) {
+                $attribute_name = trim($attribute_name);
 
-                if (strlen($key) === 0) {
+                if (strlen($attribute_name) === 0) {
                     continue;
                 }
             }
 
-            if (is_object($val) && is_callable($val)) {
-                $val = $val();
+            if (is_object($attribute_value) && is_callable($attribute_value)) {
+                $attribute_value = $attribute_value();
             }
 
-            if (is_null($val)) {
+            if (is_null($attribute_value)) {
                 continue;
             }
 
-            if (is_object($val)) {
-                if (is_callable([ $val, 'toArray' ])) {
-                    $val = $val->toArray();
-                } elseif (is_callable([ $val, '__toString' ])) {
-                    $val = strval($val);
+            if (is_object($attribute_value)) {
+                if (is_callable([ $attribute_value, 'toArray' ])) {
+                    $attribute_value = $attribute_value->toArray();
+                } elseif (is_callable([ $attribute_value, '__toString' ])) {
+                    $attribute_value = strval($attribute_value);
                 }
             }
 
-            if (is_bool($val)) {
-                if ($val) {
-                    $html[] = $key;
+            if (is_bool($attribute_value)) {
+                if ($attribute_value) {
+                    $html[] = $attribute_name;
                 }
                 continue;
-            } elseif (is_array($val)) {
-                $val = implode(' ', array_reduce($val, function ($tokens, $token) {
+            } elseif (is_array($attribute_value)) {
+                $attribute_value = implode(' ', array_reduce($attribute_value, function ($tokens, $token) {
                     if (is_string($token)) {
                         $token = trim($token);
 
@@ -67,22 +69,26 @@ if (!function_exists('html_build_attributes')) {
                     return $tokens;
                 }, []));
 
-                if (strlen($val) === 0) {
+                if (strlen($attribute_value) === 0) {
                     continue;
                 }
-            } elseif (!is_string($val) && !is_numeric($val)) {
-                $val = json_encode($val, (JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE));
+            } elseif (!is_string($attribute_value) && !is_numeric($attribute_value)) {
+                $attribute_value = json_encode($attribute_value, (JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE));
             }
 
-            if (is_callable($callback)) {
-                $val = $callback($val);
+            if (is_callable($escape)) {
+                $attribute_value = $escape($attribute_value);
             } elseif (function_exists('esc_attr')) {
-                $val = esc_attr($val);
+                $attribute_value = esc_attr($attribute_value);
             } else {
-                $val = htmlspecialchars($val, ENT_QUOTES);
+                $attribute_value = htmlspecialchars($attribute_value, ENT_QUOTES);
             }
 
-            $html[] = sprintf('%1$s="%2$s"', $key, $val);
+            $html[] = sprintf(
+                '%1$s="%2$s"',
+                $attribute_name,
+                $attribute_value
+            );
         }
 
         return implode(' ', $html);

@@ -1,4 +1,5 @@
 # Directories
+/.ddev/
 /vendor/
 
 # Files

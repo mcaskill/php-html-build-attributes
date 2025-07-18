@@ -1,6 +1,6 @@
 # html_build_attributes
 
-> PHP 5 >= 5.4, PHP 7, PHP 8
+> PHP 7 >= 7.1, PHP 8
 
 Generate a string of HTML attributes.
 

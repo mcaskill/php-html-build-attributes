@@ -14,7 +14,7 @@ if (!function_exists('html_build_attributes')) {
      * @return string Returns a string of HTML attributes
      *     or a empty string if $attributes is invalid or empty.
      */
-    function html_build_attributes($attributes, callable $escape = null)
+    function html_build_attributes($attributes, ?callable $escape = null)
     {
         if (is_object($attributes) && !($attributes instanceof \Traversable)) {
             $attributes = get_object_vars($attributes);

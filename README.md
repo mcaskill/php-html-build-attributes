@@ -23,7 +23,7 @@ breaking changes may occur between major releases.
 ## API
 
 ```php
-html_build_attributes( array|object $attr [, callable $callback = null ] ) : string
+html_build_attributes( array|object $attr [, ?callable $callback = null ] ) : string
 ```
 
 ### Parameters
